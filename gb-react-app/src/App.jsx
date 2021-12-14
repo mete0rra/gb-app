@@ -7,7 +7,7 @@ import {
 } from "./Components/MessageList/Constants";
 import { MessageList } from "./Components/MessageList";
 import { MessageForm } from "./Components/MessageForm";
-// import { ChatList } from "./Components/ChatList";
+import { ChatList } from "./Components/ChatList";
 import { v4 as uuidv4 } from "uuid";
 import "./App.css";
 
@@ -34,7 +34,7 @@ function App() {
   return (
     <Grid container spacing={1} className="App">
       <Grid item xs={12} sm={4} md={3} lg={2} className="chat-list">
-        {/* <ChatList /> */}
+        <ChatList />
       </Grid>
       <Grid item xs={12} sm={8} md={9} lg={10} className="chat">
         <Box className="App-header"></Box>
