@@ -1,28 +1,54 @@
-import React from "react";
-import logo from "./logo.svg";
+import { Box, Grid } from "@mui/material/";
+import { useState, useEffect } from "react";
+import {
+  BOT_MESSAGE,
+  INITIAL_MESSAGES,
+  AUTHORS,
+} from "./Components/MessageList/Constants";
+import { MessageList } from "./Components/MessageList";
+import { MessageForm } from "./Components/MessageForm";
+// import { ChatList } from "./Components/ChatList";
+import { v4 as uuidv4 } from "uuid";
 import "./App.css";
-import { Message } from "./Message/Message";
 
-const name = "Andrew";
 function App() {
+  const [messageList, setMessageList] = useState(INITIAL_MESSAGES);
+
+  useEffect(() => {
+    let timer = 0;
+    const botMessageList = { id: "", author: "", text: "" };
+    if (messageList[messageList.length - 1].author !== AUTHORS.BOT)
+      timer = setTimeout(() => {
+        if (BOT_MESSAGE.id === "") {
+          botMessageList.id = uuidv4();
+          botMessageList.author = BOT_MESSAGE.author;
+          botMessageList.text = BOT_MESSAGE.text;
+        }
+        setMessageList([...messageList, botMessageList]);
+      }, 1500);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [messageList]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        <Message name={name} />
-      </header>
-    </div>
+    <Grid container spacing={1} className="App">
+      <Grid item xs={12} sm={4} md={3} lg={2} className="chat-list">
+        {/* <ChatList /> */}
+      </Grid>
+      <Grid item xs={12} sm={8} md={9} lg={10} className="chat">
+        <Box className="App-header"></Box>
+        <Box className="App-main">
+          <MessageList messageList={messageList} />
+        </Box>
+        <Box className="App-footer">
+          <MessageForm
+            messageList={messageList}
+            setMessageList={setMessageList}
+          />
+        </Box>
+      </Grid>
+    </Grid>
   );
 }
 
